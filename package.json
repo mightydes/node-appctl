@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "name": "node-appctl",
+  "description": "NodeJS IPC Tool.",
+  "keywords": [
+    "IPC",
+    "unix socket"
+  ],
+  "author": {
+    "name": "Lev Nazarenko",
+    "email": "lynazarenko@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:mightydes/node-appctl.git"
+  },
+  "homepage": "https://github.com/mightydes/node-appctl",
+  "bugs": {
+    "url": "https://github.com/mightydes/node-appctl/issues"
+  },
+  "license": "MIT",
+  "main": "src/index.js",
+  "dependencies": {
+    "debug": "^2.3",
+    "underscore": "^1.8"
+  },
+  "devDependencies": {}
+}
