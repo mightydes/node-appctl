@@ -7,7 +7,7 @@ class AppctlServer {
 
     /**
      * @param options
-     * @options 'socketPath' -- mandatory
+     * @options {string} 'socketPath' -- mandatory
      */
     constructor(options) {
         this.options = options;
@@ -60,7 +60,7 @@ class AppctlServer {
      */
     handleCommand(command, data, emitter) {
         try {
-            if (!_.has(this._register, 'command')) {
+            if (!_.has(this._register, command)) {
                 throw new Error(`[node-appctl] Unknown command: '${command}'!`);
             }
             const res = this._register[command](data);
