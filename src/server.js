@@ -1,5 +1,6 @@
 const fs = require('fs');
 const net = require('net');
+const path = require('path');
 const _ = require('underscore');
 const debug = require('debug')('node-appctl:server');
 
@@ -37,6 +38,22 @@ class AppctlServer {
      */
     register(command, handler) {
         this._register[command] = handler;
+    }
+
+    /**
+     * @public
+     * @param {string} folder
+     */
+    registerFolder(folder) {
+        fs.readdirSync(folder)
+            .map((file) => {
+                const filePath = path.join(folder, file);
+                if (fs.lstatSync(filePath).isFile()) {
+                    const commandName = file.substr(0, file.lastIndexOf('.'));
+                    debug(`Registering command:`, commandName, filePath);
+                    this.register(commandName, require(filePath));
+                }
+            });
     }
 
     /**
