@@ -82,7 +82,12 @@ class AppctlServer {
             }
             const res = this._register[command](data);
             if (res instanceof Promise) {
-                return res.then((response) => this.sendResponse(response, emitter));
+                return res
+                    .then((response) => this.sendResponse(response, emitter))
+                    .catch((e) => {
+                        console.error(e);
+                        return emitter.end();
+                    });
             }
             return this.sendResponse(res, emitter);
         } catch (e) {
