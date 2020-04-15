@@ -5,7 +5,7 @@ NodeJS IPC Tool
 
 ## Command Format
 
-This package provides an IPC bridge via unix-socket.
+This package provides simple process intercommunication mechanism via TCP or IPC.
 Communication performed using JSON commands:
 
 ```json
@@ -24,8 +24,15 @@ Where `command` is the command name, and `data` is the command payload (optional
 ```js
 const appctl = require('node-appctl');
 
+// For TCP connection:
 const server = appctl.createServer({
-    socketPath: '/path/to/unix.sock' // Mandatory path to unix socket
+    port: 4000,
+    host: 'localhost'
+});
+
+// -OR- For IPC connection:
+const server = appctl.createServer({
+    path: '/path/to/appctl.sock'
 });
 
 server.register('exampleCommand', (data) => {
@@ -45,8 +52,14 @@ server.register('exampleCommand', (data) => {
 ```js
 const appctl = require('node-appctl');
 
+// For TCP connection:
 const client = appctl.createClient({
-    socketPath: '/path/to/unix.sock' // Mandatory path to unix socket
+    port: 4000
+});
+
+// -OR- For IPC connection:
+const client = appctl.createClient({
+    path: '/path/to/appctl.sock'
 });
 
 client.emit('exampleCommand', {hello: 'World'})

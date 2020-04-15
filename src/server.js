@@ -8,12 +8,14 @@ class AppctlServer {
 
     /**
      * @param options
-     * @options {string} 'socketPath' -- mandatory
+     * @option {number} 'port'
+     * @option {string} 'path' -- mutually exclusive with 'port'
+     * @option {string} 'host' -- optional
      */
     constructor(options) {
         this.options = options;
         this.server = net.createServer();
-        this.server.listen(this.prepSocket());
+        this.server.listen(this.prepNetwork());
         this.server.on('connection', (emitter) => {
             emitter.on('data', (data) => {
                 try {
@@ -37,6 +39,7 @@ class AppctlServer {
      * @param {function} handler
      */
     register(command, handler) {
+        debug(`Registering command:`, command);
         this._register[command] = handler;
     }
 
@@ -58,14 +61,20 @@ class AppctlServer {
 
     /**
      * @private
-     * @returns {string}
+     * @return {*}
      */
-    prepSocket() {
-        try {
-            fs.unlinkSync(this.options.socketPath);
-        } catch (e) {
+    prepNetwork() {
+        if (!this.options.port && this.options.path) {
+            // IPC socket:
+            try {
+                fs.unlinkSync(this.options.path);
+            } catch (e) {
+            }
+            return _.pick(this.options, ['path']);
         }
-        return this.options.socketPath;
+
+        // TCP port:
+        return _.pick(this.options, ['port', 'host']);
     }
 
     /**
