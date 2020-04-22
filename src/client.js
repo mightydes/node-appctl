@@ -23,7 +23,7 @@ class AppctlClient {
             const message = JSON.stringify({command: command, data: data});
 
             const client = net.createConnection(this.options, () => {
-                client.write(message)
+                client.write(message);
             });
 
             // On response received:
