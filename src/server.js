@@ -94,7 +94,7 @@ class AppctlServer {
                 return res
                     .then((response) => this.sendResponse(response, emitter))
                     .catch((e) => {
-                        console.error(e);
+                        console.error(e || `[node-appctl] Command '${command}' rejected!`);
                         return emitter.end();
                     });
             }
